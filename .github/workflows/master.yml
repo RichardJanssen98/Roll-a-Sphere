@@ -26,13 +26,13 @@ jobs:
 
       # Test
       - name: Run tests
-        uses: docker pull gableroux/unity3d:2019.3.3f1-windows
+        uses: RichardJanssen98/Roll-a-Sphere
         with:
           unityVersion: 2019.3.3f1
 
       # Build
       - name: Build project
-        uses: docker pull gableroux/unity3d:2019.3.3f1-windows
+        uses: RichardJanssen98/Roll-a-Sphere
         with:
           unityVersion: 2019.3.3f1
           targetPlatform: StandaloneWindows64
