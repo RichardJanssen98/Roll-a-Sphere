@@ -26,6 +26,10 @@ jobs:
 
       # Test
       - name: Run tests
+      strategy:
+        matrix:
+            projectPath:
+                - Roll-a-Sphere
         uses: RichardJanssen98/Roll-a-Sphere@v1
         with:
           unityVersion: 2019.3.3f1
