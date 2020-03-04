@@ -26,13 +26,13 @@ jobs:
 
       # Test
       - name: Run tests
-        uses: RichardJanssen98/Roll-a-Sphere
+        uses: RichardJanssen98/Roll-a-Sphere@v1
         with:
           unityVersion: 2019.3.3f1
 
       # Build
       - name: Build project
-        uses: RichardJanssen98/Roll-a-Sphere
+        uses: RichardJanssen98/Roll-a-Sphere@v1
         with:
           unityVersion: 2019.3.3f1
           targetPlatform: StandaloneWindows64
