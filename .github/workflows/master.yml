@@ -1,39 +1,43 @@
-name: Test Master
+name: Build project
 
 on:
+  pull_request: {}
   push: { branches: [master] }
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  build:
-    name: Build my Project
+  testAllModes:
+    name: Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - Roll-a-Sphere
+        unityVersion:
+          - 2019.3.3f1
+        testMode:
+          - editmode
     steps:
-    
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           lfs: true
-    
-      # Cache
       - uses: actions/cache@v1.1.0
         with:
-          path: Library
-          key: Library
-
-      # Test
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
+          restore-keys: |
+            Library-
       - uses: webbertakken/unity-test-runner@v1.4
-        env:
-            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        id: tests
         with:
-            projectPath: Roll-a-Sphere
-            unityVersion: 2019.3.3f1
-
-      # Output 
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: ${{ matrix.testMode }}-artifacts
       - uses: actions/upload-artifact@v1
         with:
-          name: Build
-          path: build
+          name: Test results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.artifactsPath }}
