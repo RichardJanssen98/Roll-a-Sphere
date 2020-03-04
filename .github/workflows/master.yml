@@ -32,13 +32,6 @@ jobs:
             projectPath: Roll-a-Sphere
             unityVersion: 2019.3.3f1
 
-      # Build
-      - name: Build project
-        uses: RichardJanssen98/Roll-a-Sphere@v1
-        with:
-          unityVersion: 2019.3.3f1
-          targetPlatform: StandaloneWindows64
-
       # Output 
       - uses: actions/upload-artifact@v1
         with:
