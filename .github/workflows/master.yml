@@ -20,6 +20,8 @@ jobs:
           - 2019.3.3f1
         testMode:
           - editmode
+        targetPlatform:
+          - StandaloneWindows64
     steps:
       - uses: actions/checkout@v2
         with:
@@ -41,3 +43,12 @@ jobs:
         with:
           name: Test results for ${{ matrix.testMode }}
           path: ${{ steps.tests.outputs.artifactsPath }}
+      - uses: webbertakken/unity-builder@v0.11
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+      - uses: actions/upload-artifact@v1
+        with:
+          name: Build
+          path: build
