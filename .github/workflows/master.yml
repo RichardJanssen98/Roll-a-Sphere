@@ -25,14 +25,12 @@ jobs:
           key: Library
 
       # Test
-      - name: Run tests
-      strategy:
-        matrix:
-            projectPath:
-                - Roll-a-Sphere
-        uses: RichardJanssen98/Roll-a-Sphere@v1
+      - uses: webbertakken/unity-test-runner@v1.4
+        env:
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          unityVersion: 2019.3.3f1
+            projectPath: Roll-a-Sphere
+            unityVersion: 2019.3.3f1
 
       # Build
       - name: Build project
