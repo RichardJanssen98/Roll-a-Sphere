@@ -26,16 +26,16 @@ jobs:
 
       # Test
       - name: Run tests
-        uses: webbertakken/unity-test-runner@v1.3
+        uses: docker pull gableroux/unity3d:2019.3.3f1-windows
         with:
           unityVersion: 2019.3.3f1
 
       # Build
       - name: Build project
-        uses: webbertakken/unity-builder@v0.10
+        uses: docker pull gableroux/unity3d:2019.3.3f1-windows
         with:
           unityVersion: 2019.3.3f1
-          targetPlatform: Windows
+          targetPlatform: StandaloneWindows64
 
       # Output 
       - uses: actions/upload-artifact@v1
