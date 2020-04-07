@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isGrounded = false;
 
+    [SerializeField]
+    private ScoreManager scoreManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,5 +53,10 @@ public class PlayerMovement : MonoBehaviour
         {
             rigidbody.AddForce(0, jumpForce, 0);
         }
+    }
+
+    public void CallScoreIncrease(int value)
+    {
+        scoreManager.IncreaseScore(value);
     }
 }
