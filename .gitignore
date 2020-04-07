@@ -5,3 +5,5 @@ Temp/
 Logs/
 obj/
 .idea/
+*.ide-shm
+*.ide-wal
