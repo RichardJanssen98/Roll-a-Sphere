@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Finish : MonoBehaviour
+public class OutOfBounds : MonoBehaviour
 {
+
     [SerializeField]
-    LevelManager levelManager;
+    private LevelManager levelManager;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<PlayerMovement>() != null)
         {
-            levelManager.EndGame(true);
+            levelManager.EndGame(false);
         }
+
     }
 }
