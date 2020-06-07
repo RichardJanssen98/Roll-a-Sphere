@@ -27,4 +27,12 @@ public class Timer : MonoBehaviour
             secondsCount = 0;
         }
     }
+
+    public int GetTimerInSeconds()
+    {
+        int time = minuteCount * 60;
+        time += (int)secondsCount;
+
+        return time;
+    }
 }

@@ -10,7 +10,7 @@ public class SceneLoadManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void LoadScene(int sceneId)
+    public static void LoadScene(int sceneId)
     {
         SceneManager.LoadScene(sceneId);
     }

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using ScoreboardService.Models;
 
 namespace ScoreboardService.Controllers
@@ -15,9 +18,56 @@ namespace ScoreboardService.Controllers
     {
         private readonly PlayerScoreContext _context;
 
+        private ConnectionFactory factory;
+        private IConnection conn;
+        private IModel channel;
+
         public PlayerScoresController(PlayerScoreContext context)
         {
             _context = context;
+
+            factory = new ConnectionFactory { HostName = "localhost" };
+            conn = factory.CreateConnection();
+            channel = conn.CreateModel();
+
+            channel.QueueDeclare(
+                queue: "AccountQueue",
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null
+                );
+
+            var consumer = new EventingBasicConsumer(channel);
+            consumer.Received += async (model, eventArgs) =>
+            {
+                var body = eventArgs.Body;
+                var message = Encoding.UTF8.GetString(body.ToArray());
+
+                Console.WriteLine($"[MessageQueue] Received message '{message}'");
+
+                var messageParts = message.Split(":");
+
+                var result = 0;
+                if (messageParts[0] == "DELETE")
+                {
+                    result = await DeleteRecordsOfPlayerId(Int32.Parse(messageParts[1]));
+                }
+
+                Console.WriteLine($"[MessageQueue] Processed message '{message}' and deleted {result} records.");
+            };
+
+            channel.BasicConsume(queue: "AccountQueue", autoAck: true, consumer: consumer);
+        }
+
+        //Destructor
+        ~PlayerScoresController()
+        {
+            //Connection and Channels are meant to be long-lived
+            //So we don't open and close them for each operation
+
+            channel.Close();
+            conn.Close();
         }
 
         // GET: api/PlayerScores
@@ -85,6 +135,19 @@ namespace ScoreboardService.Controllers
             return CreatedAtAction("GetPlayerScore", new { id = playerScore.PlayerScoreId }, playerScore);
         }
 
+        // POST: api/playerScores/playerScore?playeraccountid=x&level=a&score=b&time=c&emailPlayer=d&userName=e
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost("playerScore")]
+        public async Task<ActionResult<PlayerScore>> PostPlayerScore(int playerAccountId, int level, int score, int time, string emailPlayer, string userName)
+        {
+            PlayerScore playerScore = new PlayerScore(playerAccountId, level, score, time, emailPlayer, userName);
+            _context.PlayerScores.Add(playerScore);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetPlayerScore", new { id = playerScore.PlayerScoreId }, playerScore);
+        }
+
         // DELETE: api/PlayerScores/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<PlayerScore>> DeletePlayerScore(int id)
@@ -104,6 +167,20 @@ namespace ScoreboardService.Controllers
         private bool PlayerScoreExists(int id)
         {
             return _context.PlayerScores.Any(e => e.PlayerScoreId == id);
+        }
+
+        private async Task<int> DeleteRecordsOfPlayerId(int playerId)
+        {
+            var playerHighScores = await _context.PlayerScores.Where(h => h.PlayerScoreId == playerId).ToListAsync();
+
+            var deletedAmount = playerHighScores.Count;
+
+            if (deletedAmount == 0) { return 0; }
+
+            _context.PlayerScores.RemoveRange(playerHighScores);
+            await _context.SaveChangesAsync();
+
+            return deletedAmount;
         }
     }
 }

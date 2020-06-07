@@ -24,7 +24,7 @@ namespace PlayerDataService.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlayerLevel>>> GetPlayerLevels()
         {
-            return await _context.PlayerLevels.ToListAsync();
+            return await _context.PlayerLevels.Include(playerLevel => playerLevel.PlayerLocations).ToListAsync();
         }
 
         // GET: api/PlayerLevels/5
@@ -73,13 +73,14 @@ namespace PlayerDataService.Controllers
             return NoContent();
         }
 
-        // POST: api/PlayerLevels
+        // POST: api/PlayerLevels/postLocations?level=a&emailPlayer=b&userName=c
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
+        [HttpPost("postLocations")]
         public async Task<ActionResult<PlayerLevel>> PostPlayerLevel(PlayerLevel playerLevel)
         {
             _context.PlayerLevels.Add(playerLevel);
+            
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPlayerLevel", new { id = playerLevel.PlayerLevelId }, playerLevel);

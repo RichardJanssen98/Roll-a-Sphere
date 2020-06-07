@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using PlayerDataService.Models;
 
 namespace PlayerDataService
@@ -45,6 +46,17 @@ namespace PlayerDataService
                 });
             });
 
+            // Add framework services.
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "PlayerLevelLocations",
+                    Version = "v1",
+                    Description = "Yes Hello"
+                });
+            });
+
             services.AddDbContext<PlayerLevelContext>(opt =>
                opt.UseInMemoryDatabase("PlayerDataDB"));
 
@@ -58,6 +70,12 @@ namespace PlayerDataService
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger()
+            .UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseCors(MyAllowSpecificOrigins);
 

@@ -7,6 +7,10 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField]
     private GhostManager ghostManager;
+    [SerializeField]
+    private ScoreManager scoreManager;
+    [SerializeField]
+    private Timer timer;
 
     // Start is called before the first frame update
     void Start()
@@ -18,9 +22,10 @@ public class LevelManager : MonoBehaviour
     {
         if (win)
         {
-            ghostManager.PutLocationsInDatabase();
-            Debug.Log("TO-DO: Add API call to Scoreboard");
-            Debug.Log("TO-DO: Change scene to menu");
+            scoreManager.PostScoreForCheatTest(timer);
+            ghostManager.PostLocationsToDatabase();
+            scoreManager.PostScoreToDatabase(timer);
+            Destroy(GameObject.FindObjectOfType<SceneLoadManager>());
             SceneManager.LoadScene(0);
         }
         else

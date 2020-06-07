@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AntiCheatService.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace AntiCheatService.Controllers
 {
@@ -71,6 +73,17 @@ namespace AntiCheatService.Controllers
             }
 
             return NoContent();
+        }
+
+        // POST: api/levelminimums/amicheating?level=a&score=b&time=c
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost("amicheating")]
+        public async Task<bool> PostTestCheating(int level, int score, int time)
+        {
+            bool result = _context.TestForCheat(level, score, time);
+
+            return result;
         }
 
         // POST: api/LevelMinimums

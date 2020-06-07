@@ -2,19 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Net.Http;
+using System.Net;
+using System.Threading.Tasks;
+using System;
 
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField]
-    private Text scoreText; 
+    private Text scoreText;
 
     private int score = 0;
+    HttpClient httpClient;
+
+    private int PlayerId;
 
     // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(this);
         scoreText.text = "Score: " + score;
+        httpClient = new HttpClient();
+
+        //KILL ME NOW
+        PlayerId = GameObject.FindObjectOfType<AccountController>().PlayerId;
     }
 
     public void IncreaseScore(int value)
@@ -22,4 +33,47 @@ public class ScoreManager : MonoBehaviour
         score += value;
         scoreText.text = "Score: " + score;
     }
+
+    public async void PostScoreForCheatTest(Timer timer)
+    {
+        var values = new Dictionary<string, string>
+        {
+            { "thing1", "hello" },
+            { "thing2", "world" }
+        };
+
+        var content = new FormUrlEncodedContent(values);
+
+        var response = await httpClient.PostAsync("http://localhost:27015/cheat/levelminimums/amicheating?level=1&score=" + score + "&time=" + timer.GetTimerInSeconds(), content);
+        
+
+        var responseString = await response.Content.ReadAsStringAsync();
+
+        bool responseBool = Boolean.Parse(responseString);
+
+        if (responseBool)
+        {
+            AlertCheat();
+        }
+    }
+
+    private void AlertCheat()
+    {
+        Debug.Log("YOU CHEATED, STOP THAT");
+    }
+
+    public async void PostScoreToDatabase(Timer timer)
+    {
+        var values = new Dictionary<string, string>
+        {
+            { "thing1", "hello" },
+            { "thing2", "world" }
+        };
+
+        var content = new FormUrlEncodedContent(values);
+
+        var response = await httpClient.PostAsync("http://localhost:27015/score/playerScores/playerScore?playeraccountid=" + PlayerId + "&level=1&score=" + score + "&time=" + timer.GetTimerInSeconds() + "&emailPlayer=richard@richard.com&userName=Richard", content);
+        Debug.Log("Score response: " + response);
+    }
 }
+
