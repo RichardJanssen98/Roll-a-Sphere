@@ -28,7 +28,7 @@ public class PlayerLocation
         this.locationNumber = locationNumber;
     }
 
-    public PlayerLocation(float x, float y, float z, int locationNumber)
+    public PlayerLocation( float x, float y, float z, int locationNumber)
     {
         this.x = x;
         this.y = y;

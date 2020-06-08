@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -53,8 +54,12 @@ namespace ScoreboardService.Controllers
                 {
                     result = await DeleteRecordsOfPlayerId(Int32.Parse(messageParts[1]));
                 }
+                else if (messageParts[0] == "CHANGE")
+                {
+                    result = await ChangeUserNameOfPlayerId(Int32.Parse(messageParts[1]), messageParts[2]);
+                }
 
-                Console.WriteLine($"[MessageQueue] Processed message '{message}' and deleted {result} records.");
+                Console.WriteLine($"[MessageQueue] Processed message '{message}' and touched {result} records.");
             };
 
             channel.BasicConsume(queue: "AccountQueue", autoAck: true, consumer: consumer);
@@ -171,16 +176,51 @@ namespace ScoreboardService.Controllers
 
         private async Task<int> DeleteRecordsOfPlayerId(int playerId)
         {
-            var playerHighScores = await _context.PlayerScores.Where(h => h.PlayerScoreId == playerId).ToListAsync();
+            var deletedAmount = 0;
 
-            var deletedAmount = playerHighScores.Count;
+            var optionsBuilder = new DbContextOptionsBuilder<PlayerScoreContext>();
+            optionsBuilder.UseInMemoryDatabase("PlayerScoreDB");
+            using (var tempContext = new PlayerScoreContext(optionsBuilder.Options))
+            {
+                var playerHighScores = await tempContext.PlayerScores.Where(h => h.PlayerAccountId == playerId).ToListAsync();
 
-            if (deletedAmount == 0) { return 0; }
+                deletedAmount = playerHighScores.Count;
 
-            _context.PlayerScores.RemoveRange(playerHighScores);
-            await _context.SaveChangesAsync();
+                if (deletedAmount == 0) { return 0; }
+
+                tempContext.PlayerScores.RemoveRange(playerHighScores);
+                await tempContext.SaveChangesAsync();
+            }
 
             return deletedAmount;
+        }
+
+        private async Task<int> ChangeUserNameOfPlayerId(int playerId, string userName)
+        {
+            var changedAmount = 0;
+
+            var optionsBuilder = new DbContextOptionsBuilder<PlayerScoreContext>();
+            optionsBuilder.UseInMemoryDatabase("PlayerScoreDB");
+            using (var tempContext = new PlayerScoreContext(optionsBuilder.Options))
+            {
+                var playerHighScores = await tempContext.PlayerScores.Where(h => h.PlayerAccountId == playerId).ToListAsync();
+
+                changedAmount = playerHighScores.Count;
+
+                if (changedAmount == 0) { return 0; }
+
+                foreach (PlayerScore playerScore in playerHighScores)
+                {
+                    PlayerScore playerScoreNewUsername = new PlayerScore(playerScore.PlayerScoreId, playerScore.PlayerAccountId, playerScore.Level, playerScore.Score, playerScore.Time, playerScore.EmailPlayer, userName);
+                    tempContext.Entry(playerScore).State = EntityState.Detached;
+
+                    tempContext.Entry(playerScoreNewUsername).State = EntityState.Modified;
+                }
+
+                await tempContext.SaveChangesAsync();
+            }
+
+            return changedAmount;
         }
     }
 }

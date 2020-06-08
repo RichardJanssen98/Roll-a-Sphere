@@ -10,6 +10,7 @@ using UnityEngine.UI;
 
 public class AccountController : MonoBehaviour
 {
+    //Register
     [SerializeField]
     private InputField emailInput;
     [SerializeField]
@@ -17,10 +18,15 @@ public class AccountController : MonoBehaviour
     [SerializeField]
     private InputField userNameInput;
 
+    //Login
     [SerializeField]
     private InputField loginEmailInput;
     [SerializeField]
     private InputField loginPasswordInput;
+
+    //ChangeName
+    [SerializeField]
+    private InputField changeUsernameInput;
 
     public PlayerAccount loggedInPlayer;
 
@@ -64,7 +70,7 @@ public class AccountController : MonoBehaviour
     {
         HttpClient httpClient = new HttpClient();
 
-        var response = await httpClient.GetAsync("http://localhost:50830/api/Accounts/Login?username=" + loginEmailInput.text + "&password=" + loginPasswordInput.text);
+        var response = await httpClient.GetAsync("http://localhost:27015/account/Accounts/Login?username=" + loginEmailInput.text + "&password=" + loginPasswordInput.text);
         string jsonResponse = await response.Content.ReadAsStringAsync();
     
         loggedInPlayer = JsonConvert.DeserializeObject<PlayerAccount>(jsonResponse);
@@ -80,7 +86,35 @@ public class AccountController : MonoBehaviour
     {
         HttpClient httpClient = new HttpClient();
 
-        await httpClient.DeleteAsync("http://localhost:50830/api/Accounts/" + PlayerId);
+        await httpClient.DeleteAsync("http://localhost:27015/account/Accounts/" + PlayerId);
+    }
+
+    public void ChangeUsername()
+    {
+        ChangeUsernamePlayerAsync();
+    }
+
+    public async System.Threading.Tasks.Task ChangeUsernamePlayerAsync()
+    {
+        loggedInPlayer.Username = changeUsernameInput.text;
+
+        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:27015/account/accounts/" + loggedInPlayer.AccountId);
+        httpWebRequest.ContentType = "application/json";
+        httpWebRequest.Method = "PUT";
+
+        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+        {
+            Debug.Log("playerAccountChangeName: " + loggedInPlayer.Username);
+            string json = JsonUtility.ToJson(loggedInPlayer);
+            Debug.Log("json: " + json);
+            streamWriter.Write(json);
+        }
+
+        var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        {
+            var result = streamReader.ReadToEnd();
+        }
     }
 
     public void StartGame()

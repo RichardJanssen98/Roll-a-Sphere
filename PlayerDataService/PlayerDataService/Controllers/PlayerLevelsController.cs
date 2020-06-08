@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlayerDataService.Models;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace PlayerDataService.Controllers
 {
@@ -15,9 +18,60 @@ namespace PlayerDataService.Controllers
     {
         private readonly PlayerLevelContext _context;
 
+        private ConnectionFactory factory;
+        private IConnection conn;
+        private IModel channel;
+
         public PlayerLevelsController(PlayerLevelContext context)
         {
             _context = context;
+
+            factory = new ConnectionFactory { HostName = "localhost" };
+            conn = factory.CreateConnection();
+            channel = conn.CreateModel();
+
+            channel.QueueDeclare(
+                queue: "AccountGhostQueue",
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null
+                );
+
+            var consumer = new EventingBasicConsumer(channel);
+            consumer.Received += async (model, eventArgs) =>
+            {
+                var body = eventArgs.Body;
+                var message = Encoding.UTF8.GetString(body.ToArray());
+
+                Console.WriteLine($"[MessageQueue] Received message '{message}'");
+
+                var messageParts = message.Split(":");
+
+                var result = 0;
+                if (messageParts[0] == "DELETE")
+                {
+                    result = await DeleteRecordsOfPlayerId(Int32.Parse(messageParts[1]));
+                }
+                else if (messageParts[0] == "CHANGE")
+                {
+                    result = await ChangeUserNameOfPlayerId(Int32.Parse(messageParts[1]), messageParts[2]);
+                }
+
+                Console.WriteLine($"[MessageQueue] Processed message '{message}' and touched {result} records.");
+            };
+
+            channel.BasicConsume(queue: "AccountGhostQueue", autoAck: true, consumer: consumer);
+        }
+
+        //Destructor
+        ~PlayerLevelsController()
+        {
+            //Connection and Channels are meant to be long-lived
+            //So we don't open and close them for each operation
+
+            channel.Close();
+            conn.Close();
         }
 
         // GET: api/PlayerLevels
@@ -105,6 +159,54 @@ namespace PlayerDataService.Controllers
         private bool PlayerLevelExists(int id)
         {
             return _context.PlayerLevels.Any(e => e.PlayerLevelId == id);
+        }
+        private async Task<int> DeleteRecordsOfPlayerId(int playerId)
+        {
+            var deletedAmount = 0;
+
+            var optionsBuilder = new DbContextOptionsBuilder<PlayerLevelContext>();
+            optionsBuilder.UseInMemoryDatabase("PlayerDataDB");
+            using (var tempContext = new PlayerLevelContext(optionsBuilder.Options))
+            {
+                var playerHighScores = await tempContext.PlayerLevels.Where(h => h.PlayerAccountId == playerId).ToListAsync();
+
+                deletedAmount = playerHighScores.Count;
+
+                if (deletedAmount == 0) { return 0; }
+
+                tempContext.PlayerLevels.RemoveRange(playerHighScores);
+                await tempContext.SaveChangesAsync();
+            }
+
+            return deletedAmount;
+        }
+
+        private async Task<int> ChangeUserNameOfPlayerId(int playerId, string userName)
+        {
+            var changedAmount = 0;
+
+            var optionsBuilder = new DbContextOptionsBuilder<PlayerLevelContext>();
+            optionsBuilder.UseInMemoryDatabase("PlayerDataDB");
+            using (var tempContext = new PlayerLevelContext(optionsBuilder.Options))
+            {
+                var playerHighScores = await tempContext.PlayerLevels.Where(h => h.PlayerAccountId == playerId).Include(h => h.PlayerLocations).ToListAsync();
+
+                changedAmount = playerHighScores.Count;
+
+                if (changedAmount == 0) { return 0; }
+
+                foreach (PlayerLevel playerLevel in playerHighScores)
+                {
+                    PlayerLevel playerLevelNewUsername = new PlayerLevel(playerLevel.PlayerLevelId, playerLevel.PlayerAccountId, playerLevel.Level, playerLevel.EmailPlayer, userName, playerLevel.PlayerLocations);
+                    tempContext.Entry(playerLevel).State = EntityState.Detached;
+
+                    tempContext.Entry(playerLevelNewUsername).State = EntityState.Modified;
+                }
+
+                await tempContext.SaveChangesAsync();
+            }
+
+            return changedAmount;
         }
     }
 }

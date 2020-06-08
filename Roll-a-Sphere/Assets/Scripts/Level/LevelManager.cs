@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
             scoreManager.PostScoreForCheatTest(timer);
             ghostManager.PostLocationsToDatabase();
             scoreManager.PostScoreToDatabase(timer);
-            Destroy(GameObject.FindObjectOfType<SceneLoadManager>());
+            Destroy(GameObject.FindObjectOfType<SceneLoadManager>().gameObject);
             SceneManager.LoadScene(0);
         }
         else

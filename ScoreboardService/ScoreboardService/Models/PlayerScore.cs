@@ -26,6 +26,17 @@ namespace ScoreboardService.Models
             this.Username = userName;
         }
 
+        public PlayerScore(int playerScoreId, int playerAccountId, int level, int score, int time, string emailPlayer, string userName)
+        {
+            this.PlayerScoreId = playerScoreId;
+            this.PlayerAccountId = playerAccountId;
+            this.Level = level;
+            this.Score = score;
+            this.Time = time;
+            this.EmailPlayer = emailPlayer;
+            this.Username = userName;
+        }
+
         public PlayerScore()
         {
 

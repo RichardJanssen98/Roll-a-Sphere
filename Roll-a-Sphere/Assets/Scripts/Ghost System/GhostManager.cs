@@ -8,6 +8,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using UnityEngine.UI;
 using System;
+using Assets.Scripts.Account;
 
 public class GhostManager : MonoBehaviour
 {
@@ -33,11 +34,16 @@ public class GhostManager : MonoBehaviour
 
     private float ghostMoveTimer;
 
+    private PlayerAccount loggedInPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
         playerLocations = new List<PlayerLocation>();
         httpClient = new HttpClient();
+
+        //KILL ME NOW
+        loggedInPlayer = GameObject.FindObjectOfType<AccountController>().loggedInPlayer;
     }
 
     // Update is called once per frame
@@ -62,7 +68,7 @@ public class GhostManager : MonoBehaviour
     public async void PostLocationsToDatabase()
     {
         //var response = await httpClient.PostAsync("http://localhost:27015/ghost/playerlevels/postLocations?level=1&emailPlayer=Richard@Richard.com&userName=Richard", JsonUtility.ToJson(playerLocations));
-        PlayerHistory playerHistory = new PlayerHistory(1, "Richard@Richard.com", "Richard", playerLocations);
+        PlayerHistory playerHistory = new PlayerHistory(loggedInPlayer.AccountId, 1, loggedInPlayer.Email, loggedInPlayer.Username, playerLocations);
 
         var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:27015/ghost/playerlevels/postLocations");
         httpWebRequest.ContentType = "application/json";

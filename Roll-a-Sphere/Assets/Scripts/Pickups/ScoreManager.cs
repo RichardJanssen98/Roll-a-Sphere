@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net;
 using System.Threading.Tasks;
 using System;
+using Assets.Scripts.Account;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class ScoreManager : MonoBehaviour
     private int score = 0;
     HttpClient httpClient;
 
-    private int PlayerId;
+    private PlayerAccount loggedInPlayer;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,7 @@ public class ScoreManager : MonoBehaviour
         httpClient = new HttpClient();
 
         //KILL ME NOW
-        PlayerId = GameObject.FindObjectOfType<AccountController>().PlayerId;
+        loggedInPlayer = GameObject.FindObjectOfType<AccountController>().loggedInPlayer;
     }
 
     public void IncreaseScore(int value)
@@ -72,7 +73,7 @@ public class ScoreManager : MonoBehaviour
 
         var content = new FormUrlEncodedContent(values);
 
-        var response = await httpClient.PostAsync("http://localhost:27015/score/playerScores/playerScore?playeraccountid=" + PlayerId + "&level=1&score=" + score + "&time=" + timer.GetTimerInSeconds() + "&emailPlayer=richard@richard.com&userName=Richard", content);
+        var response = await httpClient.PostAsync("http://localhost:27015/score/playerScores/playerScore?playeraccountid=" + loggedInPlayer.AccountId + "&level=1&score=" + score + "&time=" + timer.GetTimerInSeconds() + "&emailPlayer=" + loggedInPlayer.Email + "&userName=" + loggedInPlayer.Username, content);
         Debug.Log("Score response: " + response);
     }
 }
