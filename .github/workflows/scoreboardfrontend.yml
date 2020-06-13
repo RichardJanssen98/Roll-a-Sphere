@@ -38,7 +38,7 @@ jobs:
           chmod u+x ./scoreboardfrontend/kustomization.yml
       - name: Deploy 
         run: |-
-          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME_FRONTEND }}=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME_FRONTEND }}:latest
-          ./kustomize build . | kubectl apply -f -
+          ./scoreboardfrontend/kustomization.yml edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME_FRONTEND }}=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME_FRONTEND }}:latest
+          ./scoreboardfrontend/kustomization.yml build . | kubectl apply -f -
           kubectl rollout status deployment/${{ secrets.GCLOUD_APP_NAME_FRONTEND }}
           kubectl get services -o wide
