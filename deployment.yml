@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: frontend
+  name: scoreboardfrontend
 spec:
   replicas: 1
   strategy:
@@ -12,10 +12,10 @@ spec:
   template:
     metadata:
       labels:
-        app: frontend
+        app: scoreboardfrontend
     spec:
       containers:
-      - name: frontend
+      - name: scoreboardfrontend
         image: eu.gcr.io/rollasphere/rollaspherefrontend
         ports:
         - containerPort: 3000

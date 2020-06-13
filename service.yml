@@ -21,4 +21,4 @@ spec:
     - port: 80
       targetPort: 3000
   selector:
-    app: frontend
+    app: scoreboardfrontend
