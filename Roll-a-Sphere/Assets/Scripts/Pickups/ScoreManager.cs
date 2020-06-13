@@ -73,7 +73,7 @@ public class ScoreManager : MonoBehaviour
 
         var content = new FormUrlEncodedContent(values);
 
-        var response = await httpClient.PostAsync("http://localhost:27015/score/playerScores/playerScore?playeraccountid=" + loggedInPlayer.AccountId + "&level=1&score=" + score + "&time=" + timer.GetTimerInSeconds() + "&emailPlayer=" + loggedInPlayer.Email + "&userName=" + loggedInPlayer.Username, content);
+        var response = await httpClient.PostAsync("http://localhost:27015/scorepost/playerScores/playerScore?playeraccountid=" + loggedInPlayer.AccountId + "&level=1&score=" + score + "&time=" + timer.GetTimerInSeconds() + "&emailPlayer=" + loggedInPlayer.Email + "&userName=" + loggedInPlayer.Username, content);
         Debug.Log("Score response: " + response);
     }
 }

@@ -11,25 +11,23 @@ class Home extends Component{
         playerScores: [],
     };
 
-    playerScores: PlayerScore[] = [];
-
     render() {
         return (
             <div className="App">
                 <h1>Roll a Sphere Scoreboard</h1>
                 <MultipleSorterTable playerScores={this.state.playerScores} />
+                <Button onClick={() => (this.loadshit(this))}>Get Scores</Button>
             </div> 
         );
     }
 
-    async componentDidMount(): Promise<void> {
-        let component = this;
+    loadshit(component: Component) {
         let scoreboardAPI = new ApiCaller("27015");
 
-        scoreboardAPI.get('playerscores').then(function (response) {
-            component.playerScores = response.data as PlayerScore[];
+        scoreboardAPI.get('playerscores').then( (response) => {
             component.setState({ playerScores: response.data as PlayerScore[]})
-        });
+        })
     }
+
 }
 export default Home;

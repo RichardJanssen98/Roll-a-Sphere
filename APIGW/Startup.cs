@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,13 +29,18 @@ namespace APIGW
         public void ConfigureServices(IServiceCollection s)
         {
             s.AddControllers();
-            //s.AddAuthentication()
-            //    .AddJwtBearer("TestKey" ,options =>
-            //    {
-            //        options.Authority = "https://localhost:666";
-            //        options.RequireHttpsMetadata = false;
+            var authenticationProviderKey = "TestKey";
 
-            //        options.Audience = "APIGW";
+            s.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(authenticationProviderKey, x =>
+                {
+                    x.Authority = "https://dev-8q2fiwpb.eu.auth0.com/";
+                    x.Audience = "ATc6ptWZ1mAzwdTfma5EGpSa1qXgHxvd";
+                });
+
             //    });
             s.AddCors();
             s.AddOcelot();
@@ -53,8 +59,8 @@ namespace APIGW
 
             app.UseRouting();
             
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             
             app.UseCors(b => b
