@@ -1,6 +1,7 @@
 // src/index.js
 
 import ReactDOM from "react-dom";
+import React from "react";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./react-auth0-spa";

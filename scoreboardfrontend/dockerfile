@@ -5,7 +5,6 @@ WORKDIR .
 
 # Installing dependencies
 COPY package*.json ./
-ENV CI=false
 RUN npm install
 
 # Copying source files
