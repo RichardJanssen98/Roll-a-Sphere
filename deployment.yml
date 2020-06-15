@@ -18,7 +18,7 @@ spec:
       - name: scoreboardfrontend
         image: eu.gcr.io/rollasphere/rollaspherefrontend
         ports:
-        - containerPort: 3000
+        - containerPort: 8080
         resources:
           requests:
             cpu: 100m
