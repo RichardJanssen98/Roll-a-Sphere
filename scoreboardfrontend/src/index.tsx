@@ -1,8 +1,7 @@
 import React, { Component } from "react"
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import MultipleSorterTable from "./component/MultipleSorterTable"
 import { PlayerScore } from "./model/Content";
-import ReactDOM from 'react-dom';
 import "./App.css";
 import ApiCaller from "./api/GateWay";
 

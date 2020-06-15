@@ -1,8 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import Axios from "axios";
-import { awaitExpression } from "@babel/types";
-import { User } from "oidc-client";
-import { useAuth0 } from "../react-auth0-spa";
 
 class ApiCaller {
 	port: string;

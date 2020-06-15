@@ -1,4 +1,4 @@
-import { Table, Input, Button, Space } from 'antd';
+import { Table } from 'antd';
 import React, { Component } from "react"
 import { PlayerScore } from "../model/Content";
 
