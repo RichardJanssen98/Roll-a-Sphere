@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v1
-#
+
       - name: Build Docker image
         run: |-
-          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend" --build-arg GITHUB_SHA="$GITHUB_SHA" --build-arg GITHUB_SHA="$GITHUB_SHA" --build-arg GITHUB_REF="$GITHUB_REF" ./scoreboardfrontend
+          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend" --build-arg GITHUB_SHA="$GITHUB_SHA" --build-arg GITHUB_REF="$GITHUB_REF" ./scoreboardfrontend
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -38,7 +38,7 @@ jobs:
           chmod u+x ./kustomize
       - name: Deploy 
         run: |-
-          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend:$GITHUB:SHA
+          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend:$GITHUB_SHA
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/scoreboardfrontend
           kubectl get services -o wide
