@@ -14,7 +14,7 @@ jobs:
 #
       - name: Build Docker image
         run: |-
-          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend" --build-arg GITHUB_SHA="$GITHUB_SHA" --build-arg GITHUB_SHA="$GITHUB_SHA" --build-arg GITHUB_REF="$GITHUB_REF" ./scoreboardfrontend
+          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/&{{ secrets.GCLOUD_APP_NAME_FRONTEND}}" --build-arg GITHUB_SHA="$GITHUB_SHA" --build-arg GITHUB_SHA="$GITHUB_SHA" --build-arg GITHUB_REF="$GITHUB_REF" ./scoreboardfrontend
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -29,7 +29,7 @@ jobs:
             gcloud container clusters  get-credentials ${{ secrets.GCLOUD_CLUSTER }} --zone ${{ secrets.GCLOUD_ZONE }}
             
       - name: Push image to Google Cloud Container Registry
-        run: "docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend:$GITHUB:SHA"
+        run: "docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/&{{ secrets.GCLOUD_APP_NAME_FRONTEND}}"
      
      
       - name: Set up Kustomize
@@ -38,7 +38,7 @@ jobs:
           chmod u+x ./kustomize
       - name: Deploy 
         run: |-
-          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend:$GITHUB:SHA
+          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardfrontend=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/&{{ secrets.GCLOUD_APP_NAME_FRONTEND}}:$GITHUB:SHA
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/scoreboardfrontend
           kubectl get services -o wide
