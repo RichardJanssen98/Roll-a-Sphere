@@ -1,4 +1,5 @@
 {
     "domain": "dev-8q2fiwpb.eu.auth0.com",
-    "clientId": "ATc6ptWZ1mAzwdTfma5EGpSa1qXgHxvd"
+    "clientId": "ATc6ptWZ1mAzwdTfma5EGpSa1qXgHxvd",
+    "audience": "https://api.scoreboardfrontend.com"
   }
