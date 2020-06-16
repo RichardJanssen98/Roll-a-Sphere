@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: scoreboardfrontend
-        image: eu.gcr.io/rollasphere/rollaspherefrontend
+        image: eu.gcr.io/rollasphere/scoreboardfrontend
         ports:
         - containerPort: 3000
         resources:
