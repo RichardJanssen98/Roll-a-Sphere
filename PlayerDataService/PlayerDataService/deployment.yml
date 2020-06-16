@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: scoreboardfrontend
+  name: ghostservice
 spec:
   replicas: 1
   strategy:
@@ -12,13 +12,13 @@ spec:
   template:
     metadata:
       labels:
-        app: scoreboardfrontend
+        app: ghostservice
     spec:
       containers:
-      - name: scoreboardfrontend
-        image: eu.gcr.io/rollasphere/scoreboardfrontend
+      - name: ghostservice
+        image: eu.gcr.io/rollasphere/ghostservice
         ports:
-        - containerPort: 3000
+        - containerPort: 80
         resources:
           requests:
             cpu: 100m
