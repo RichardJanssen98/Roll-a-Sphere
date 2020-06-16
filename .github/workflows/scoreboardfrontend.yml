@@ -2,7 +2,7 @@ name: Deploy the front end to Google Cloud Run
 on:
   push:
     branches:
-      - 'master'
+      - 'frontend-deploy'
 
 jobs:
   deploy:
