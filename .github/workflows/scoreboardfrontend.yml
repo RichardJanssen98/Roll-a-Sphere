@@ -14,7 +14,7 @@ jobs:
 #
       - name: Build Docker image
         run: |-
-          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME_FRONTEND }}:latest" --build-arg latest="latest" --build-arg GITHUB_REF="$GITHUB_REF" ./scoreboardfrontend
+          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME_FRONTEND }}:latest" ./scoreboardfrontend
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
