@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Kubernetes;
 
 namespace APIGW
 {
@@ -43,8 +44,7 @@ namespace APIGW
 
             //    });
             s.AddCors();
-            s.AddOcelot();
-
+            s.AddOcelot().AddKubernetes();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

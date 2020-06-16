@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PlayerDataService.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -22,11 +23,17 @@ namespace PlayerDataService.Controllers
         private IConnection conn;
         private IModel channel;
 
-        public PlayerLevelsController(PlayerLevelContext context)
+        private readonly IConfiguration configuration;
+
+        public PlayerLevelsController(PlayerLevelContext context, IConfiguration configuration)
         {
+            this.configuration = configuration;
             _context = context;
 
-            factory = new ConnectionFactory { HostName = "localhost" };
+            var rabbitMQOption = configuration.GetSection(RabbitMQOptions.Position)
+               .Get<RabbitMQOptions>();
+
+            factory = new ConnectionFactory { HostName = rabbitMQOption.Connection };
             conn = factory.CreateConnection();
             channel = conn.CreateModel();
 

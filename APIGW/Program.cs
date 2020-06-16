@@ -33,7 +33,7 @@ namespace APIGW
                         .AddJsonFile("appsettings.json", true, true)
                         .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true,
                             true)
-                        .AddJsonFile(Path.Combine("configuration", "configuration.json"), optional: false,
+                        .AddJsonFile(Path.Combine("configuration", $"configuration_{hostingContext.HostingEnvironment.EnvironmentName}.json"), optional: false,
                             reloadOnChange: true)
                         .AddEnvironmentVariables();
                 })

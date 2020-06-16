@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using ScoreboardService.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace ScoreboardService.Controllers
 {
@@ -23,11 +24,17 @@ namespace ScoreboardService.Controllers
         private IConnection conn;
         private IModel channel;
 
-        public PlayerScoresController(PlayerScoreContext context)
+        private readonly IConfiguration configuration;
+
+        public PlayerScoresController(PlayerScoreContext context, IConfiguration configuration)
         {
+            this.configuration = configuration;
             _context = context;
 
-            factory = new ConnectionFactory { HostName = "localhost" };
+            var rabbitMQOption = configuration.GetSection(RabbitMQOptions.Position)
+                .Get<RabbitMQOptions>();
+
+            factory = new ConnectionFactory { HostName = rabbitMQOption.Connection };
             conn = factory.CreateConnection();
             channel = conn.CreateModel();
 
