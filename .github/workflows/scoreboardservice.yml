@@ -14,7 +14,7 @@ jobs:
 
       - name: Build Docker image
         run: |-
-          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice:latest" ./scoreboardservice
+          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice:latest" ./ScoreboardService/ScoreboardService
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
