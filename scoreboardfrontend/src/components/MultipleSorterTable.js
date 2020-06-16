@@ -1,7 +1,6 @@
 import { Table } from 'antd';
 import "antd/dist/antd.css";
 import React, { Component } from "react"
-import { PlayerScore } from "../model/Content";
 
 class MultipleSorterTable extends Component{
   constructor(props) {

@@ -2,12 +2,11 @@
 
 import React, { useState } from "react";
 import { useAuth0 } from "../react-auth0-spa";
-import { PlayerScore } from "../model/Content";
 import MultipleSorterTable from "../components/MultipleSorterTable";
 
 const ExternalApi = () => {
   const [showResult, setShowResult] = useState(false);
-  const [apiMessage, setApiMessage] = useState("");
+  const [apiMessage] = useState("");
   const { getIdTokenClaims } = useAuth0();
   const [responseData, setResponseData] = useState("");
 

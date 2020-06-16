@@ -2,7 +2,6 @@
 
 import React from "react";
 import NavBar from "./components/NavBar";
-import { useAuth0 } from "./react-auth0-spa";
 
 // New - import the React Router components, and the Profile page component
 import { Router, Route, Switch } from "react-router-dom";
