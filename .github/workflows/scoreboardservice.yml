@@ -14,7 +14,7 @@ jobs:
 
       - name: Build Docker image
         run: |-
-          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice:latest" ./ScoreboardService/ScoreboardService
+          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice:$GITHUB_SHA" ./ScoreboardService/ScoreboardService
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -29,7 +29,7 @@ jobs:
             gcloud container clusters  get-credentials ${{ secrets.GCLOUD_CLUSTER }} --zone ${{ secrets.GCLOUD_ZONE }}
             
       - name: Push image to Google Cloud Container Registry
-        run: "docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice"
+        run: "docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice:$GITHUB_SHA"
      
      
       - name: Set up Kustomize
@@ -40,7 +40,7 @@ jobs:
       - name: Deploy 
         working-directory: ./ScoreboardService/ScoreboardService
         run: |-
-          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice:latest
+          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/scoreboardservice:$GITHUB_SHA
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/scoreboardservice
           kubectl get services -o wide
