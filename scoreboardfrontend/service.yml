@@ -22,3 +22,4 @@ spec:
       targetPort: 3000
   selector:
     app: scoreboardfrontend
+  type: NodePort
