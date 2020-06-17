@@ -19,7 +19,7 @@
     },
     "APIGW": {
       "commandName": "Project",
-      "applicationUrl": "https://localhost:1231;http://localhost:1232",
+      "applicationUrl": "http://localhost:27015",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

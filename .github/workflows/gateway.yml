@@ -14,7 +14,7 @@ jobs:
 #
       - name: Build Docker image
         run: |-
-          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/gatewayservice:$GITHUB_SHA" ./APIGW
+          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/gatewayservice:$GITHUB_SHA" ./APIGW/APIGW
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -33,12 +33,12 @@ jobs:
      
      
       - name: Set up Kustomize
-        working-directory: ./APIGW
+        working-directory: ./APIGW/APIGW
         run: |-
           curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
           chmod u+x ./kustomize
       - name: Deploy 
-        working-directory: ./APIGW
+        working-directory: ./APIGW/APIGW
         run: |-
           ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/gatewayservice=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/gatewayservice:$GITHUB_SHA
           ./kustomize build . | kubectl apply -f -
