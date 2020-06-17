@@ -4,9 +4,6 @@ on:
     branches:
       - 'gateway-deploy'
 
-env:
-  GITHUB_SHA: ${{ github.sha }}
-	  
 jobs:
   deploy:
     name: Deploy job
