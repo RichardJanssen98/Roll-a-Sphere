@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v1
-
+#
       - name: Build Docker image
         run: |-
           docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/gatewayservice:$GITHUB_SHA" ./APIGW
