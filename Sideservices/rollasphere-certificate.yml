@@ -4,4 +4,4 @@ metadata:
   name: rollasphere-certificate
 spec:
   domains:
-    - rollasphere.richard-janssen.com
+    - www.richard-janssen.com
