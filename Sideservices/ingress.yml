@@ -2,6 +2,10 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: rollasphere-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: ingressstatic
+    networking.gke.io/managed-certificates: rollasphere-certificate
+
 spec:
   rules:
   - http:
