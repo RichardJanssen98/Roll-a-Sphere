@@ -8,6 +8,7 @@ WORKDIR /src
 COPY ["/APIGW.csproj", "./"]
 RUN dotnet restore "APIGW.csproj"
 COPY . .
+WORKDIR "/src/"
 RUN dotnet build "APIGW.csproj" -c Release -o /app/build
 
 FROM build AS publish
