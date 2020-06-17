@@ -22,3 +22,4 @@ spec:
       targetPort: 80
   selector:
     app: gatewayservice
+  type: NodePort
