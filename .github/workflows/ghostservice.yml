@@ -14,7 +14,7 @@ jobs:
 
       - name: Build Docker image
         run: |-
-          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/ghostservice:latest" ./PlayerDataService/PlayerDataService
+          docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/ghostservice:$GITHUB_SHA" ./PlayerDataService/PlayerDataService
       - name: Authenticate into Google Cloud Platform
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -29,7 +29,7 @@ jobs:
             gcloud container clusters  get-credentials ${{ secrets.GCLOUD_CLUSTER }} --zone ${{ secrets.GCLOUD_ZONE }}
             
       - name: Push image to Google Cloud Container Registry
-        run: "docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/ghostservice"
+        run: "docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/ghostservice:$GITHUB_SHA"
      
      
       - name: Set up Kustomize
@@ -40,7 +40,7 @@ jobs:
       - name: Deploy 
         working-directory: ./PlayerDataService/PlayerDataService
         run: |-
-          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/ghostservice=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/ghostservice:latest
+          ./kustomize edit set image eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/ghostservice=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/ghostservice:$GITHUB_SHA
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/ghostservice
           kubectl get services -o wide
