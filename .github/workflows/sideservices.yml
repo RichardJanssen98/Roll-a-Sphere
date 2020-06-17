@@ -34,5 +34,5 @@ jobs:
         working-directory: ./Sideservices
         run: |-
           ./kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment/rabbitmqservice
+          kubectl rollout status deployment/rabbitmq
           kubectl get services -o wide
