@@ -6,6 +6,8 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: ingressstatic
 
 spec:
+  tls:
+  - secretName: rollaspheresecret
   rules:
   - http:
       paths:
