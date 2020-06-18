@@ -2235,6 +2235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1242767711}
+  levelManager: {fileID: 2084534007}
 --- !u!1 &555458343
 GameObject:
   m_ObjectHideFlags: 0
