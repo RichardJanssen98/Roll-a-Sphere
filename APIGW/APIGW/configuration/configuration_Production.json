@@ -9,7 +9,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "api/ghost/{everything}",
+      "UpstreamPathTemplate": "/api/ghost/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
     },
     {
@@ -21,7 +21,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "api/score/{everything}",
+      "UpstreamPathTemplate": "/api/score/{everything}",
       "UpstreamHttpMethod": [ "GET" ],
     },
     {
@@ -33,7 +33,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "api/scorepost/{everything}",
+      "UpstreamPathTemplate": "/api/scorepost/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ]
     },
     {
@@ -45,7 +45,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "api/cheat/{everything}",
+      "UpstreamPathTemplate": "/api/cheat/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
     },
     {
@@ -57,7 +57,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "api/account/{everything}",
+      "UpstreamPathTemplate": "/api/account/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
     }
   ],
