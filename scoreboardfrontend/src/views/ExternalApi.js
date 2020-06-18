@@ -11,7 +11,7 @@ const ExternalApi = () => {
   const callApi = async () => {
     try {
 
-      const response = await fetch(window.location.origin + "/score/playerscores", {
+      const response = await fetch(window.location.origin + "api/score/playerscores", {
       });
 
       setResponseData(await response.json());
