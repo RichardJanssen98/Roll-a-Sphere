@@ -23,10 +23,6 @@
       ],
       "UpstreamPathTemplate": "/score/{everything}",
       "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
-        "AllowedScopes": []
-      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
