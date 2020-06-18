@@ -4,7 +4,6 @@ metadata:
   name: rollasphere-ingress
   annotations:
     kubernetes.io/ingress.global-static-ip-name: ingressstatic
-    networking.gke.io/managed-certificates: rollasphere-certificate
 
 spec:
   rules:
