@@ -13,6 +13,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     private Text scoreText;
 
+    [SerializeField]
+    private LevelManager levelManager;
+
     private int score = 0;
     HttpClient httpClient;
 
@@ -55,6 +58,10 @@ public class ScoreManager : MonoBehaviour
         if (responseBool)
         {
             AlertCheat();
+        }
+        else
+        {
+            levelManager.PostScoreAndLocations();
         }
     }
 

@@ -23,8 +23,6 @@ public class LevelManager : MonoBehaviour
         if (win)
         {
             scoreManager.PostScoreForCheatTest(timer);
-            ghostManager.PostLocationsToDatabase();
-            scoreManager.PostScoreToDatabase(timer);
             Destroy(GameObject.FindObjectOfType<SceneLoadManager>().gameObject);
             SceneManager.LoadScene(0);
         }
@@ -33,5 +31,11 @@ public class LevelManager : MonoBehaviour
             ghostManager.ClearLocations();
             SceneManager.LoadScene(1);
         }
+    }
+
+    public void PostScoreAndLocations()
+    {
+        ghostManager.PostLocationsToDatabase();
+        scoreManager.PostScoreToDatabase(timer);
     }
 }
