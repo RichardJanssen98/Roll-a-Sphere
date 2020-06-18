@@ -86,7 +86,7 @@ public class AccountController : MonoBehaviour
     {
         HttpClient httpClient = new HttpClient();
 
-        await httpClient.DeleteAsync("http://34.120.156.223/account/Accounts/" + PlayerId);
+        await httpClient.DeleteAsync("http://34.120.156.223/api/account/Accounts/" + PlayerId);
     }
 
     public void ChangeUsername()
@@ -98,7 +98,7 @@ public class AccountController : MonoBehaviour
     {
         loggedInPlayer.Username = changeUsernameInput.text;
 
-        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://34.120.156.223/account/accounts/" + loggedInPlayer.AccountId);
+        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://34.120.156.223/api/account/accounts/" + loggedInPlayer.AccountId);
         httpWebRequest.ContentType = "application/json";
         httpWebRequest.Method = "PUT";
 
