@@ -1,23 +1,17 @@
 // src/views/ExternalApi.js
 
 import React, { useState } from "react";
-import { useAuth0 } from "../react-auth0-spa";
 import MultipleSorterTable from "../components/MultipleSorterTable";
 
 const ExternalApi = () => {
   const [showResult, setShowResult] = useState(false);
   const [apiMessage] = useState("");
-  const { getIdTokenClaims } = useAuth0();
   const [responseData, setResponseData] = useState("");
 
   const callApi = async () => {
     try {
-      const token = await getIdTokenClaims();
 
       const response = await fetch(window.location.origin + "/score/playerscores", {
-        headers: {
-          Authorization: `Bearer ${token.__raw}`
-        }
       });
 
       setResponseData(await response.json());
