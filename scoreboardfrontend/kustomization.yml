@@ -12,22 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
-metadata:
-<<<<<<< HEAD:AntiCheatService/AntiCheatService/service.yml
-  name: gke-cheatservice
-=======
-  name: gke-scoreboardfrontend
->>>>>>> frontend-deploy:scoreboardfrontend/service.yml
-spec:
-  ports:
-    - port: 80
-      targetPort: 80
-  selector:
-<<<<<<< HEAD:AntiCheatService/AntiCheatService/service.yml
-    app: cheatservice
-=======
-    app: scoreboardfrontend
-  type: NodePort
->>>>>>> frontend-deploy:scoreboardfrontend/service.yml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yml
+- service.yml
