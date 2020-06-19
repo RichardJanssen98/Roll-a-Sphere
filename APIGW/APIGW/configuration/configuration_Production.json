@@ -3,45 +3,66 @@
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
-      "ServiceName": "ghostservice",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "gke-ghostservice",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/ghost/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
-      "ServiceName": "scoreboardservice",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "gke-scoreboardservice",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/score/{everything}",
       "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
-        "AllowedScopes": []
-      }
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
-      "ServiceName": "scoreboardservice",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "gke-scoreboardservice",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/scorepost/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
-      "Service": "cheatservice",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "gke-cheatservice",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/cheat/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
-      "ServiceName": "accountservice",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "gke-accountservice",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/account/{everything}",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:27015"
+    "BaseUrl": "https://"
   },
   "Logging": {
     "LogLevel": {

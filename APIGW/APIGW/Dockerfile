@@ -5,16 +5,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["/AntiCheatService.csproj", "./"]
-RUN dotnet restore "AntiCheatService.csproj"
+COPY ["/APIGW.csproj", "./"]
+RUN dotnet restore "APIGW.csproj"
 COPY . .
-RUN dotnet build "AntiCheatService.csproj" -c Release -o /app/build
+RUN dotnet build "APIGW.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "AntiCheatService.csproj" -c Release -o /app/publish
+RUN dotnet publish "APIGW.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AntiCheatService.dll"]
+ENTRYPOINT ["dotnet", "APIGW.dll"]
