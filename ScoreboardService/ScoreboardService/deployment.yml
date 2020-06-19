@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: cheatservice
+  name: scoreboardservice
 spec:
   replicas: 1
   strategy:
@@ -12,11 +12,11 @@ spec:
   template:
     metadata:
       labels:
-        app: cheatservice
+        app: scoreboardservice
     spec:
       containers:
-      - name: cheatservice
-        image: eu.gcr.io/rollasphere/cheatservice
+      - name: scoreboardservice
+        image: eu.gcr.io/rollasphere/scoreboardservice
         ports:
         - containerPort: 80
         resources:
