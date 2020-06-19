@@ -43,7 +43,7 @@ public class AccountController : MonoBehaviour
     {
         PlayerAccount playerAccount = new PlayerAccount(emailInput.text, userNameInput.text, passwordInput.text);
 
-        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:50830/api/accounts");
+        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://34.120.156.223/api/account/accounts");
         httpWebRequest.ContentType = "application/json";
         httpWebRequest.Method = "POST";
 
@@ -70,7 +70,7 @@ public class AccountController : MonoBehaviour
     {
         HttpClient httpClient = new HttpClient();
 
-        var response = await httpClient.GetAsync("http://localhost:27015/account/Accounts/Login?username=" + loginEmailInput.text + "&password=" + loginPasswordInput.text);
+        var response = await httpClient.GetAsync("http://34.120.156.223/api/account/Accounts/Login?username=" + loginEmailInput.text + "&password=" + loginPasswordInput.text);
         string jsonResponse = await response.Content.ReadAsStringAsync();
     
         loggedInPlayer = JsonConvert.DeserializeObject<PlayerAccount>(jsonResponse);
@@ -86,7 +86,7 @@ public class AccountController : MonoBehaviour
     {
         HttpClient httpClient = new HttpClient();
 
-        await httpClient.DeleteAsync("http://localhost:27015/account/Accounts/" + PlayerId);
+        await httpClient.DeleteAsync("http://34.120.156.223/api/account/Accounts/" + PlayerId);
     }
 
     public void ChangeUsername()
@@ -98,7 +98,7 @@ public class AccountController : MonoBehaviour
     {
         loggedInPlayer.Username = changeUsernameInput.text;
 
-        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:27015/account/accounts/" + loggedInPlayer.AccountId);
+        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://34.120.156.223/api/account/accounts/" + loggedInPlayer.AccountId);
         httpWebRequest.ContentType = "application/json";
         httpWebRequest.Method = "PUT";
 

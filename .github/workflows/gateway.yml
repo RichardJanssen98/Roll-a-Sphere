@@ -2,7 +2,7 @@ name: Deploy the gateway service to Google Cloud
 on:
   push:
     branches:
-      - 'gateway-deploy'
+      - 'gateway-localauthorization'
 
 jobs:
   deploy:
