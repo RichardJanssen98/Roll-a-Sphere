@@ -16,7 +16,7 @@ jobs:
         run: |-
           dotnet build ./AntiCheatService/AntiCheatService.sln --configuration Release
           dotnet test ./AntiCheatService/AntiCheatService.sln --configuration Release
-		  
+	  
       - name: Build Docker image
         run: |-
           docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/cheatservice:$GITHUB_SHA" ./AntiCheatService/AntiCheatService
