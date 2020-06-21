@@ -15,26 +15,18 @@ namespace AntiCheatService.Models
 
         public virtual DbSet<LevelMinimum> LevelMinimums { get; set; }
 
-        
-        public bool TestForCheat(int level, int score, int time)
+
+        public static bool TestForCheat(LevelMinimum levelMinimum, int level, int score, int time)
         {
-            LevelMinimum levelMinimum = LevelMinimums.Find(level);
-            
-            if (levelMinimum != null)
+            if (level == levelMinimum.LevelMinimumId && (score <= levelMinimum.MaxScore && time >= levelMinimum.MinimumTime))
             {
-                if (level == levelMinimum.LevelMinimumId && (score <= levelMinimum.MaxScore && time >= levelMinimum.MinimumTime))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                return false;
             }
             else
             {
                 return true;
             }
+
         }
     }
 }
