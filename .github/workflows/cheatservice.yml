@@ -11,12 +11,12 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v1
-		
+
       - name: Test project via Unit Tests
         run: |-
           dotnet build ./AntiCheatService/AntiCheatService.sln --configuration Release
           dotnet test ./AntiCheatService/AntiCheatService.sln --configuration Release
-	  
+
       - name: Build Docker image
         run: |-
           docker build --tag "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/cheatservice:$GITHUB_SHA" ./AntiCheatService/AntiCheatService
