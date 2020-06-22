@@ -16,7 +16,7 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     private LevelManager levelManager;
 
-    private int score = 0;
+    public int Score { get; set; }
     HttpClient httpClient;
 
     private PlayerAccount loggedInPlayer;
@@ -25,7 +25,7 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(this);
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Score: " + Score;
         httpClient = new HttpClient();
 
         //KILL ME NOW
@@ -34,8 +34,8 @@ public class ScoreManager : MonoBehaviour
 
     public void IncreaseScore(int value)
     {
-        score += value;
-        scoreText.text = "Score: " + score;
+        Score += value;
+        scoreText.text = "Score: " + Score;
     }
 
     public async void PostScoreForCheatTest(Timer timer)
@@ -48,7 +48,7 @@ public class ScoreManager : MonoBehaviour
 
         var content = new FormUrlEncodedContent(values);
 
-        var response = await httpClient.PostAsync("http://34.120.156.223/api/cheat/levelminimums/amicheating?level=1&score=" + score + "&time=" + timer.GetTimerInSeconds(), content);
+        var response = await httpClient.PostAsync("http://34.120.156.223/api/cheat/levelminimums/amicheating?level=1&score=" + Score + "&time=" + timer.GetTimerInSeconds(), content);
         
 
         var responseString = await response.Content.ReadAsStringAsync();
@@ -80,7 +80,7 @@ public class ScoreManager : MonoBehaviour
 
         var content = new FormUrlEncodedContent(values);
 
-        var response = await httpClient.PostAsync("http://34.120.156.223/api/scorepost/playerScores/playerScore?playeraccountid=" + loggedInPlayer.AccountId + "&level=1&score=" + score + "&time=" + timer.GetTimerInSeconds() + "&emailPlayer=" + loggedInPlayer.Email + "&userName=" + loggedInPlayer.Username, content);
+        var response = await httpClient.PostAsync("http://34.120.156.223/api/scorepost/playerScores/playerScore?playeraccountid=" + loggedInPlayer.AccountId + "&level=1&score=" + Score + "&time=" + timer.GetTimerInSeconds() + "&emailPlayer=" + loggedInPlayer.Email + "&userName=" + loggedInPlayer.Username, content);
         Debug.Log("Score response: " + response);
     }
 }
