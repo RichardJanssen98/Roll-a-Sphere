@@ -8,3 +8,6 @@ obj/
 .suo
 APIGW/APIGW/.vs/APIGW/v16/TestStore/0/000.testlog
 APIGW/APIGW/.vs/APIGW/v16/TestStore/0/testlog.manifest
+PlayerDataService/.vs/PlayerDataService/v16/TestStore/0/testlog.manifest
+ScoreboardService/.vs/ScoreboardService/v16/TestStore/0/000.testlog
+ScoreboardService/.vs/ScoreboardService/v16/TestStore/0/testlog.manifest
