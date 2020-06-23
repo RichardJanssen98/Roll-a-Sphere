@@ -70,7 +70,7 @@ public class GhostManager : MonoBehaviour
         //var response = await httpClient.PostAsync("http://34.120.156.223/api/ghost/playerlevels/postLocations?level=1&emailPlayer=Richard@Richard.com&userName=Richard", JsonUtility.ToJson(playerLocations));
         PlayerHistory playerHistory = new PlayerHistory(loggedInPlayer.AccountId, 1, loggedInPlayer.Email, loggedInPlayer.Username, playerLocations);
 
-        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://34.120.156.223/api/ghost/playerlevels/postLocations");
+        var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:27015/ghost/playerlevels/postLocations");
         httpWebRequest.ContentType = "application/json";
         httpWebRequest.Method = "POST";
 
@@ -91,7 +91,7 @@ public class GhostManager : MonoBehaviour
 
     public async void GetLocationsFromDatabase()
     {
-        var response = await httpClient.GetAsync("http://34.120.156.223/api/ghost/playerlevels");
+        var response = await httpClient.GetAsync("http://localhost:27015/ghost/playerlevels");
         string jsonResponse = await response.Content.ReadAsStringAsync();
 
         playerHistories = JsonConvert.DeserializeObject<List<PlayerHistory>>(jsonResponse);
