@@ -14,7 +14,7 @@ const ExternalApi = () => {
     try {
       const token = await getIdTokenClaims();
 
-      const response = await fetch(window.location.origin + "/score/playerscores", {
+      const response = await fetch("http://localhost:27015/score/playerscores", {
         headers: {
           Authorization: `Bearer ${token.__raw}`
         }
