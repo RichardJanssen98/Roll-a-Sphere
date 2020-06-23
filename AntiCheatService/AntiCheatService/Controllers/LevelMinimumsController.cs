@@ -81,7 +81,8 @@ namespace AntiCheatService.Controllers
         [HttpPost("amicheating")]
         public async Task<bool> PostTestCheating(int level, int score, int time)
         {
-            bool result = _context.TestForCheat(level, score, time);
+            var validation = await _context.LevelMinimums.FirstOrDefaultAsync(l => l.LevelMinimumId == level);
+            bool result = LevelMinimumContext.TestForCheat(validation, level, score, time);
 
             return result;
         }

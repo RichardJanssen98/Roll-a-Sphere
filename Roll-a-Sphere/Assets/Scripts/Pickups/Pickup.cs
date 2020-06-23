@@ -5,7 +5,7 @@ using UnityEngine;
 public class Pickup : MonoBehaviour
 {
     [SerializeField]
-    int scoreValue = 10;
+    public int scoreValue = 10;
 
     // Update is called once per frame
     void Update()

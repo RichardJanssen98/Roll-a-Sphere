@@ -63,7 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Editor\TheBestTest.cs" />
+    <Compile Include="Assets\Scripts\Editor\ScoreTester.cs" />
     <Reference Include="UnityEditor.TestRunner">
       <HintPath>E:/Documents/Fontys Projecten/Roll-A-Sphere/Roll-a-Sphere/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
