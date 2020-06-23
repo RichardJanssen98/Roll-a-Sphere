@@ -16,7 +16,7 @@ public class ScoreTester : MonoBehaviour
     [Test]
     public void TestCorrectPickup()
     {
-        
+
         pickup.scoreValue = 10;
         try
         {
@@ -26,7 +26,7 @@ public class ScoreTester : MonoBehaviour
         {
             Debug.Log("Expected Error because ScoreText");
         }
-        
+
         Assert.AreEqual(scoreManager.Score, 10);
     }
 

@@ -6,3 +6,5 @@ obj/
 *.ide-shm
 *.ide-wal
 .suo
+APIGW/APIGW/.vs/APIGW/v16/TestStore/0/000.testlog
+APIGW/APIGW/.vs/APIGW/v16/TestStore/0/testlog.manifest
